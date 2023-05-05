@@ -5,6 +5,8 @@
 //  * Oтрефакторить приложение на модули(API)
 // 2. Реализовать форму регистрации
 
+import { addTodo, deleteTodo, getTodos } from "./api.js";
+
 const buttonElement = document.getElementById("add-button");
 const listElement = document.getElementById("list");
 const textInputElement = document.getElementById("text-input");
@@ -19,21 +21,7 @@ const host = "https://webdev-hw-api.vercel.app/api/v2/todos";//выносим в
 
 
 const fetchTodosAndRender = () => {
-    return fetch(host, {
-        method: "GET",
-        headers: {
-            Authorization: token,
-        },
-    })
-        .then((response) => {
-            // обработать 401 код ответа 
-            if (response.status === 401) {
-                //     password = prompt("Ввести верный пароль");
-                //     fetchTodosAndRender();  //вызвать рендер чтобы повторно запросить данные с сервера
-                throw new Error("Нет авторизации");//кинуть ошибку
-            }
-            return response.json();
-        })
+    return getTodos({ token })                    //из api.js
         .then((responseData) => {
             tasks = responseData.todos;
             renderApp();
@@ -116,20 +104,14 @@ const renderApp = () => {
             const id = deleteButton.dataset.id;
 
             // Подписываемся на успешное завершение запроса с помощью then
-            fetch(`${host}/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: token,
-                },
-            })
-                .then((response) => {
-                    return response.json();
-                })
-                .then((responseData) => {
-                    // Получили данные и рендерим их в приложении
-                    tasks = responseData.todos;
-                    renderApp();
-                });
+            deleteTodo({
+
+                id, token
+            }).then((responseData) => {
+                // Получили данные и рендерим их в приложении
+                tasks = responseData.todos;
+                renderApp();
+            });
 
             renderApp();
         });
@@ -142,20 +124,10 @@ const renderApp = () => {
 
         buttonElement.disabled = true;
         buttonElement.textContent = "Задача добавляется...";
-
-        // Подписываемся на успешное завершение запроса с помощью then
-        fetch(host, {
-            method: "POST",
-            body: JSON.stringify({
-                text: textInputElement.value,
-            }),
-            headers: {
-                Authorization: token,
-            },
+        addTodo({
+            text: textInputElement.value,
+            token
         })
-            .then((response) => {
-                return response.json();
-            })
             .then(() => {
                 // TODO: кинуть исключение
                 textInputElement.value = "";
