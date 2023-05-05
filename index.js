@@ -2,7 +2,8 @@
 // 1. Реализовать форму логина в приложении
 //  * Перенести всю разметку в рендер функцию(+)
 // * Сделать форму входа динамической(+)
-//  * Oтрефакторить приложение на модули(API)
+//  * Oтрефакторить приложение на модули
+//API (+)
 // 2. Реализовать форму регистрации
 
 import { addTodo, deleteTodo, getTodos } from "./api.js";
@@ -16,8 +17,7 @@ let tasks = [];
 
 let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 token = null;
-const host = "https://webdev-hw-api.vercel.app/api/v2/todos";//выносим в переменную адрес API
-//let password = "123456";   //пароль тоже в переменную
+
 
 
 const fetchTodosAndRender = () => {
