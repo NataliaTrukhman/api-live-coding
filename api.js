@@ -1,7 +1,7 @@
 const host = "https://webdev-hw-api.vercel.app/api/v2/todos"; //выносим в переменную адрес API
 
-export function getTodos({token}){
-   return  fetch(host, {
+export function getTodos({ token }) {
+    return fetch(host, {
         method: "GET",
         headers: {
             Authorization: token,
@@ -18,11 +18,11 @@ export function getTodos({token}){
         });
 }
 
-export function deleteTodo ({
+export function deleteTodo({
     token,
     id
-}){
-     return fetch(`${host}/${id}`, {
+}) {
+    return fetch(`${host}/${id}`, {
         method: "DELETE",
         headers: {
             Authorization: token,
@@ -33,7 +33,7 @@ export function deleteTodo ({
         });
 }
 
-export function addTodo({text, token}) {
+export function addTodo({ text, token }) {
     return fetch(host, {
         method: "POST",
         body: JSON.stringify({
@@ -46,4 +46,17 @@ export function addTodo({text, token}) {
         .then((response) => {
             return response.json();
         })
+}
+//адрес: https://webdev-hw-api.vercel.app/api/user/login  //запрос на логин
+
+export function login({ login, password }) {
+    return fetch("https://webdev-hw-api.vercel.app/api/user/login", {
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            password,
+        }),
+    }).then((response) => {
+        return response.json(); //отсюда данные user в login-component 
+    })
 }
