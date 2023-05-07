@@ -1,4 +1,4 @@
-import { loginUser } from "../api.js";
+import { loginUser, registerUser } from "../api.js";
 
 export function renderLoginComponent({ appElement, setToken, fetchTodosAndRender }) {   //рендерим форму входа
     let isLoginMode = true   //то показываем форму логина. если false - форму регистрации
@@ -34,27 +34,62 @@ export function renderLoginComponent({ appElement, setToken, fetchTodosAndRender
         appElement.innerHTML = appHtml; //рендерим приложение 
 
         document.getElementById("login-button").addEventListener('click', () => {
-            const login = document.getElementById("login-input").value; //достаем значение
-            const password = document.getElementById("password-input").value;
-            //валидация 
-            if (!login) {
-                alert("Введите логин!")
-                return;
+
+            if (isLoginMode) {
+                const login = document.getElementById("login-input").value; //достаем значение
+                const password = document.getElementById("password-input").value;
+                //валидация 
+                if (!login) {
+                    alert("Введите логин!")
+                    return;
+                }
+                if (!password) {
+                    alert("Введите пароль!")
+                    return;
+                }
+                loginUser({
+                    login: login,
+                    password: password,
+                }).then((user) => {
+                    setToken(`Bearer ${user.user.token}`); //
+                    fetchTodosAndRender();
+                }).catch(error => {
+                    //ToDo выводить alert красиво
+                    alert(error.message)
+                });
+
+            } else {    //в случае регистрации
+             
+                const login = document.getElementById("login-input").value; //достаем значение
+                const password = document.getElementById("password-input").value;
+                const name = document.getElementById("name-input").value;
+                //валидация 
+
+                if (!name) {
+                    alert("Введите имя!")
+                    return;
+                }
+                if (!login) {
+                    alert("Введите логин!")
+                    return;
+                }
+                if (!password) {
+                    alert("Введите пароль!")
+                    return;
+                }
+                registerUser({
+                    login: login,
+                    password: password,
+                    name: name,
+                }).then((user) => {
+                    setToken(`Bearer ${user.user.token}`); //
+                    fetchTodosAndRender();
+                }).catch(error => {
+                    //ToDo выводить alert красиво
+                    alert(error.message)
+                });
             }
-            if (!password) {
-                alert("Введите пароль!")
-                return;
-            }
-            loginUser({
-                login: login,
-                password: password,
-            }).then((user) => {
-                setToken(`Bearer ${user.user.token}`); //
-                fetchTodosAndRender();
-            }).catch(error => {
-                //ToDo выводить alert красиво
-                alert(error.message)
-            })
+
 
             //перендерим приложение чтобы отрендерился список/ запрашиваем данные через fetch
         });
@@ -65,6 +100,6 @@ export function renderLoginComponent({ appElement, setToken, fetchTodosAndRender
         });
     };
 
-    renderForm();
+    renderForm(); // первичный вызов самой функции
 
 }
