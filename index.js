@@ -10,6 +10,7 @@
 
 import { addTodo, deleteTodo, getTodos } from "./api.js";
 import { renderLoginComponent } from "./components/login-component.js"
+import { formatDateToRu, formatDateToUs } from "./lib/formatDate/formatDate.js"
 
 const buttonElement = document.getElementById("add-button");
 const listElement = document.getElementById("list");
@@ -34,7 +35,7 @@ const fetchTodosAndRender = () => {
 const renderApp = () => {
     const appElement = document.getElementById("app");
     if (!token) {    //отрендерить форму входа /если у нас нет token - только форма входа
-            renderLoginComponent({
+        renderLoginComponent({
             appElement,
             setToken: (newToken) => {
                 token = newToken
@@ -44,9 +45,8 @@ const renderApp = () => {
 
         return;
     }
-    const formatDate = (date) => {
-        return `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()}/${date.getFullYear()} ${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`;
-    }
+    const country = "ru"; //переменную country, в которой будем хранить ru или us и в зависимости от этого показывать нужный формат даты
+
     const tasksHtml = tasks
         .map((task) => {
             return `
@@ -55,7 +55,7 @@ const renderApp = () => {
                             ${task.text} (Создал: ${task.user?.name ?? "Неизвестно"} )
                             <button data-id="${task.id}" class="button delete-button">Удалить</button>
                         </p>
-                               <p> <i>Задача создана: ${new Date(task.created_at)} </i> </p>
+                               <p> <i>Задача создана: ${country === "ru" ? formatDateToRu(new Date(task.created_at)) : formatDateToUs(new Date(task.created_at))} </i> </p>
           </li > `;
         })
         .join("");
