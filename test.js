@@ -27,3 +27,44 @@
 
 // `${ country === "ru" ? formatDateToRu(new Date(task.created_at))
 //  : formatDateToUs(new Date(task.created_at)) }`
+
+
+// {
+//     "name": "lesson_todo", // Имя нашего проекта
+//         "version": "1.0.0", // Версия нашего проекта
+//             "description": "", // Описание нашего проекта, я его не добавлял
+//                 "main": "index.js", // Основной файл проекта
+//                     "scripts": { // Мы можем подключать скрипты запуска проекта, тестирование и т. д.
+//         // Более подробно познакомитесь в следующем курсе
+//         "test": "echo \"Error: no test specified\" 	&& exit 1"
+//     },
+//     "author": "", // Автор проекта
+//         "license": "ISC" // Тип лицензии; какие есть лицензии, можно ознакомиться на сайте
+// }
+
+// {
+//     "name": "api-live-coding",
+//         "version": "1.0.0",
+//             "description": "приложение доступно по адресу  https://nataliatrukhman.github.io/api-live-coding/",
+//                 "main": "index.js",
+//                     "directories": {
+//         "lib": "lib"
+//     },
+//     "scripts": {
+//         "test": "echo \"Error: no test specified\" && exit 1"
+//     },
+//     "author": "",
+//         "license": "ISC",
+//             "dependencies": {
+//         "date-fns": "^2.30.0"
+//     }
+// }
+
+// Здесь указано название библиотеки date-fns и
+		// и версия 2.29.3, значок ^ указывает, что к проекту можно подключить любую
+		// версию библиотеки выше или равную указанной, в нашем случае >= 2.29.3
+
+
+
+
+

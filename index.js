@@ -11,6 +11,7 @@
 import { addTodo, deleteTodo, getTodos } from "./api.js";
 import { renderLoginComponent } from "./components/login-component.js"
 import { formatDateToRu, formatDateToUs } from "./lib/formatDate/formatDate.js"
+import { format } from "date-fns"
 
 const buttonElement = document.getElementById("add-button");
 const listElement = document.getElementById("list");
@@ -45,17 +46,20 @@ const renderApp = () => {
 
         return;
     }
-    const country = "ru"; //переменную country, в которой будем хранить ru или us и в зависимости от этого показывать нужный формат даты
+    // const country = "ru"; //переменную country, в которой будем хранить ru или us и в зависимости от этого показывать нужный формат даты
 
     const tasksHtml = tasks
         .map((task) => {
+            const createDate = format(new Date(task.created_at), 'dd/MM/yyyy hh:mm');
+            const now = new Date();
+            format(now, "MM-dd-yyyy hh:mm")
             return `
                     <li class="task">
                         <p class="task-text">
                             ${task.text} (Создал: ${task.user?.name ?? "Неизвестно"} )
                             <button data-id="${task.id}" class="button delete-button">Удалить</button>
                         </p>
-                               <p> <i>Задача создана: ${country === "ru" ? formatDateToRu(new Date(task.created_at)) : formatDateToUs(new Date(task.created_at))} </i> </p>
+                               <p><i>Задача создана: ${createDate}</i></p>
           </li > `;
         })
         .join("");
